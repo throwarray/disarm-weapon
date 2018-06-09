@@ -52,11 +52,11 @@ function Disarm (ped)
 			StopPedWeaponFiringWhenDropped(ped)
 
 			SetPedDropsInventoryWeapon(
-			ped,
-			weapon,
-			table.unpack(GetDisarmOffsetsForPed(ped)),
-			GetAmmoInClip(ped, weapon)
-		)
+				ped,
+				weapon,
+				table.unpack(GetDisarmOffsetsForPed(ped)),
+				GetAmmoInClip(ped, weapon)
+			)
 
 			SetCurrentPedWeapon(ped, GetHashKey("WEAPON_UNARMED"), false)
 
@@ -82,7 +82,7 @@ Citizen.CreateThread(function ()
 	end
 end)
 
--- PEDS CAN BE DISARMED
+-- PEDS CAN BE DISARMED BY PLAYER
 Citizen.CreateThread(function ()
 	local targeted, entity
 	local playerPed
@@ -91,7 +91,7 @@ Citizen.CreateThread(function ()
 		playerPed = PlayerPedId()
 		targeted, entity = GetEntityPlayerIsFreeAimingAt(GetPlayerIndex(), 0)
 
-		if targeted and HasEntityBeenDamagedByEntity(entity, playerPed, 1) and Disarm(entity) then
+		if targeted and not IsPedAPlayer(entity) and HasEntityBeenDamagedByEntity(entity, playerPed, 1) and Disarm(entity) then
 			-- ped disarmed
 		end
 
